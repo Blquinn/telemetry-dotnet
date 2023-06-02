@@ -1,0 +1,30 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant Client as c
+participant WebApp as a
+participant Worker as w
+
+queue OrdersQueue as r
+database WebAppDb as adb
+database WorkerDb as wdb
+
+c -> a: Create Order Request
+a -> adb: Store Order Record
+a -> r: Send Order Message
+w <- r: Consume Order Message
+
+group Worker Order Processing
+    w -> wdb: Store Order State Initialized
+    loop 10 times
+        a -> w: Poll For Order Process Completion
+        a <-- w: Order State
+    end
+    w -> wdb: Store Order State Complete
+end
+
+c <-- a: Return Order Request
+
+@enduml
