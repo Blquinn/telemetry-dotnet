@@ -61,11 +61,14 @@ Finally you can see the generated trace with correlated logs.
 
 ### Running
 
-1. Run the elastic stack docker-compose setup `docker-compose up setup`
-2. Run docker compose `docker compose up -d`
-3. Run the two dotnet services (WebApp & Worker) 
+1. Migrate databases
+    - `cd WebApp && dotnet ef database update`
+    - `cd Worker && dotnet ef database update`
+2. Run the elastic stack docker-compose setup `docker-compose up setup`
+3. Run docker compose `docker compose up -d`
+4. Run the two dotnet services (WebApp & Worker) 
    - `cd WebApp && dotnet run`
    - `cd Worker && dotnet run`
-4. Make a request to the `/orders` endpoint on WebApp
+5. Make a request to the `/orders` endpoint on WebApp
 
 
