@@ -1,0 +1,54 @@
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    uid: prometheus
+    access: proxy
+    orgId: 1
+    url: http://prometheus:9090
+    basicAuth: false
+    isDefault: false
+    version: 1
+    editable: false
+    jsonData:
+      httpMethod: GET
+  - name: Tempo
+    type: tempo
+    access: proxy
+    orgId: 1
+    url: http://tempo:3200
+    basicAuth: false
+    isDefault: true
+    version: 1
+    editable: false
+    apiVersion: 1
+    uid: tempo
+    jsonData:
+      httpMethod: GET
+      serviceMap:
+        datasourceUid: prometheus
+      tracesToLogsV2:
+        # Field with an internal link pointing to a logs data source in Grafana.
+        # datasourceUid value must match the uid value of the logs data source.
+        datasourceUid: 'Elastic'
+        spanStartTimeShift: '1h'
+        spanEndTimeShift: '-1h'
+        tags: []
+        filterByTraceID: true
+        filterBySpanID: false
+        customQuery: false
+#        query: 'method="${__span.tags.method}"'
+  - name: Elastic
+    type: elasticsearch
+    access: proxy
+    index: logs-dotnet-default
+    database: logs-dotnet-default
+    url: http://elastic:changeme@elasticsearch:9200
+    jsonData:
+      index: logs-dotnet-default
+      indexName: logs-dotnet-default
+      logMessageField: message
+      timeField: '@timestamp'
+      logLevelField: 'log.level'
+      elasticSearchVersion: '7.10.x'
