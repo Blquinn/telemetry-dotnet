@@ -6,7 +6,7 @@ datasources:
     uid: prometheus
     access: proxy
     orgId: 1
-    url: http://prometheus:9090
+    url: http://localhost:9090
     basicAuth: false
     isDefault: false
     version: 1
@@ -17,7 +17,7 @@ datasources:
     type: tempo
     access: proxy
     orgId: 1
-    url: http://tempo:3200
+    url: http://localhost:3200
     basicAuth: false
     isDefault: true
     version: 1
@@ -44,7 +44,7 @@ datasources:
     access: proxy
     index: logs-dotnet-default
     database: logs-dotnet-default
-    url: http://elastic:changeme@elasticsearch:9200
+    url: http://elastic:changeme@localhost:9200
     jsonData:
       index: logs-dotnet-default
       indexName: logs-dotnet-default

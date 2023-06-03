@@ -35,7 +35,7 @@ public static class OtelConfiguration
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
                     .AddMeter(InstrumentationOptions.MeterName)
-                    .AddOtlpExporter()
+                    .AddPrometheusExporter()
             ); 
     }
 }

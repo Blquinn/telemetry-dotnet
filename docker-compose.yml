@@ -38,33 +38,36 @@ services:
   # Grafana Stack
   
   tempo:
+    network_mode: host
     image: grafana/tempo:latest
     command: [ "-config.file=/etc/tempo.yaml" ]
     volumes:
       - ./prometheus/tempo.yaml:/etc/tempo.yaml
       - ./prometheus/tempo-data:/tmp/tempo
-    ports:
-      - "14268:14268"  # jaeger ingest
-      - "3200:3200"   # tempo
-      - "9095:9095" # tempo grpc
-      - "4317:4317"  # otlp grpc
-      - "4318:4318"  # otlp http
-      - "9411:9411"   # zipkin
-    networks:
-      - es-net
+#    ports:
+#      - "14268:14268"  # jaeger ingest
+#      - "3200:3200"   # tempo
+#      - "9095:9095" # tempo grpc
+#      - "4317:4317"  # otlp grpc
+#      - "4318:4318"  # otlp http
+#      - "9411:9411"   # zipkin
+#    networks:
+#      - es-net
   prometheus:
     image: prom/prometheus:latest
+    network_mode: host
     command:
       - --config.file=/etc/prometheus.yaml
       - --web.enable-remote-write-receiver
       - --enable-feature=exemplar-storage
     volumes:
       - ./prometheus/prometheus.yaml:/etc/prometheus.yaml
-    ports:
-      - "9090:9090"
-    networks:
-      - es-net
+#    ports:
+#      - "9090:9090"
+#    networks:
+#      - es-net
   grafana:
+    network_mode: host
     image: grafana/grafana:9.4.3
     volumes:
       - ./prometheus/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
@@ -73,14 +76,14 @@ services:
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
       - GF_AUTH_DISABLE_LOGIN_FORM=true
       - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor
-    ports:
-      - "3000:3000"
+#    ports:
+#      - "3000:3000"
     depends_on:
       - prometheus
       - tempo
       - elasticsearch
-    networks:
-      - es-net
+#    networks:
+#      - es-net
 
 networks:
   es-net:
